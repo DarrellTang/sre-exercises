@@ -1,4 +1,4 @@
-#4-bash
+# 4-bash
 
 * A bash script to parse out ip address from an http access log and print out occurrences of each ip in reverse order (i.e. Most frequent occurrences first)
 * `sample.log` is provided as a sample log file although the format does not follow the `<timestamp> <ip address> <http path> <http verb> <user agent>` format exactly.
