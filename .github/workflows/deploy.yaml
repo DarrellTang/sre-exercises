@@ -51,8 +51,11 @@ jobs:
     - name: Install datree
       run: curl https://get.datree.io | /bin/bash
 
+    - name: Login datree
+      run: datree config set token ${{ secrets.datree_token }}
+
     - name: Test manifest
-      run: datree test ./2-k8s/deploy.yaml --no-record
+      run: datree test ./2-k8s/deploy.yaml
 
     - name: Apply manifest
       run: kubectl --kubeconfig ${{ secrets.kubeconfig }} apply -f ./2-k8s/deploy.yaml --namespace default
