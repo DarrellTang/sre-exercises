@@ -52,7 +52,7 @@ jobs:
       run: curl https://get.datree.io | /bin/bash
 
     - name: Test manifest
-      run: datree test ./2-k8s/deployment.yaml --no-record
+      run: datree test ./2-k8s/deploy.yaml --no-record
 
     - name: Apply manifest
       run: kubectl --kubeconfig ${{ secrets.kubeconfig }} apply -f ./2-k8s/deploy.yaml --namespace default
