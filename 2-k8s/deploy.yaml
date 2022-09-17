@@ -1,0 +1,57 @@
+# Generated using k8syaml.com
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bitcoin
+  labels:
+    app: bitcoin-core
+spec:
+  selector:
+    matchLabels:
+      octopusexport: OctopusExport
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: bitcoin-core
+        octopusexport: OctopusExport
+    spec:
+      volumes:
+        - name: bitcoin-data-pvc
+          persistentVolumeClaim:
+            claimName: bitcoin-data-pvc
+      containers:
+        - name: bitcoin-core
+          image: 'bitcoin-core:22.0'
+          imagePullPolicy: IfNotPresent
+          command:
+            - bitcoind -printtoconsole -datadir /data
+          volumeMounts:
+            - name: bitcoin-data-pvc
+              mountPath: /data
+          resources:
+            requests:
+              memory: 1024mi
+              cpu: 1000m
+            limits:
+              memory: 1024mi
+              cpu: 1000m
+          securityContext:
+            runAsNonRoot: true
+      securityContext:
+        runAsNonRoot: false
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - web
+                topologyKey: kubernetes.io/hostname
+
