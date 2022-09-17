@@ -27,10 +27,10 @@ jobs:
     - name: Install Grype
       run: curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /usr/local/bin
 
-    - name: Generage Syft SBOM
+    - name: Generate Syft SBOM
       run: syft ${{ secrets.docker_hub_username }}/bitcoin-core:22.0 -o json > image.json
 
-    - name: Generage Syft SBOM
+    - name: Scan SBOM with grype
       run: grype sbom:image.json
 
   deploy:
@@ -39,6 +39,9 @@ jobs:
     needs: build-and-test
 
     steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v3
+
     - name: Install kubectl
       run: curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 
