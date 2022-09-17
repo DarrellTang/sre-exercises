@@ -55,4 +55,4 @@ jobs:
       run: datree test ./2-k8s/deployment.yaml --no-record
 
     - name: Apply manifest
-      run: kubectl --kubeconfig ${{ secrets.kubeconfig }} apply -f ./2-k8s/deployment.yaml --namespace default
+      run: kubectl --kubeconfig ${{ secrets.kubeconfig }} apply -f ./2-k8s/deploy.yaml --namespace default
