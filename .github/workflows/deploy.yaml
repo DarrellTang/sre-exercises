@@ -33,10 +33,19 @@ jobs:
     - name: Generage Syft SBOM
       run: grype sbom:image.json
 
-        #deploy:
-        #  name: Deploy to k8s
-        #  runs-on: ubuntu-latest
+    deploy:
+      name: Deploy to k8s
+      runs-on: ubuntu-latest
 
-        #  steps:
-        #  - name: Apply manifest
-        #    run: kubectl apply -f ./2-k8s/deployment.yaml
+      steps:
+      - name: Install kubectl
+        run: curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+
+      - name: Install datree
+        run: curl https://get.datree.io | /bin/bash
+
+      - name: Test manifest
+        run: datree test ./2-k8s/deployment.yaml
+
+      - name: Apply manifest
+        run: kubectl --kubeconfig ${{ secrets.kubeconfig }} apply -f ./2-k8s/deployment.yaml --namespace default
