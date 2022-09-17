@@ -4,7 +4,8 @@ on:
 
 jobs:
   build-image:
-    name: Build Image
+    name: Build & Test Image
+    continue-on-error: true
     runs-on: ubuntu-latest
 
     steps:
@@ -19,6 +20,18 @@ jobs:
 
     - name: Upload Image
       run: docker push ${{ secrets.docker_hub_username }}/bitcoin-core:22.0
+
+    - name: Install Syft
+      run: curl -sSfL https://raw.githubusercontent.com/anchore/syft/main/install.sh | sh -s -- -b /usr/local/bin
+
+    - name: Install Grype
+      run: curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b /usr/local/bin
+
+    - name: Generage Syft SBOM
+      run: syft ${{ secrets.docker_hub_username }}/bitcoin-core:22.0 -o json > image.json
+
+    - name: Generage Syft SBOM
+      run: grype sbom:image.json
 
         #deploy:
         #  name: Deploy to k8s
