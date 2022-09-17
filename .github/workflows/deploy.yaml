@@ -17,7 +17,7 @@ jobs:
       run: docker build -t bitcoin-core:22.0 ./1-Docker/
 
     - name: Upload Image
-      run: docker push bitcoin-core:22.0
+      run: docker push ${{ secrets.docker_hub_username }}/bitcoin-core:22.0
 
         #deploy:
         #  name: Deploy to k8s
