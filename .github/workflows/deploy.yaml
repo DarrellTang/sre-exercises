@@ -57,5 +57,11 @@ jobs:
     - name: Test manifest
       run: datree test ./2-k8s/deploy.yaml
 
+    - uses: azure/k8s-set-context@v2
+      with:
+         method: kubeconfig
+         kubeconfig: ${{ secrets.kubeconfig }}
+         context: nyc1-cluster01 # current-context from kubeconfig is used as default
+
     - name: Apply manifest
-      run: kubectl --kubeconfig ${{ secrets.kubeconfig }} apply -f ./2-k8s/deploy.yaml --namespace default
+      run: kubectl apply -f ./2-k8s/deploy.yaml --namespace default
