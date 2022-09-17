@@ -1,0 +1,28 @@
+on:
+  workflow_dispatch:
+
+jobs:
+  build-image:
+    name: Build Image
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v3
+
+    - name: Login to Docker Hub
+      run: docker login -u ${{ secrets.docker_hub_username }} -p ${{ secrets.docker_hub_password }}
+
+    - name: Build Image
+      run: docker build -t bitcoin-core:22.0 ./2-k8s/
+
+    - name: Upload Image
+      run: docker push bitcoin-core:22.0
+
+        #deploy:
+        #  name: Deploy to k8s
+        #  runs-on: ubuntu-latest
+
+        #  steps:
+        #  - name: Apply manifest
+        #    run: kubectl apply -f ./2-k8s/deployment.yaml
