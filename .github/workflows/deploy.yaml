@@ -2,7 +2,7 @@ name: Build, Test, Deploy
 on:
   workflow_dispatch:
   push:
-    - "3-cicd"
+  - "3-cicd"
 
 jobs:
   build-and-test:
