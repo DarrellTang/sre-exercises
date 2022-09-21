@@ -7,3 +7,5 @@ A pipeline using Github Actions to
 * Scan the SBOM using Grype
 * Test the k8s manifest for deploying the image with Datree
 * Deploy the manifest using kubectl
+
+The pipeline file is located at [.github/workflows/deploy.yaml](../.github/workflows/deploy.yaml)
